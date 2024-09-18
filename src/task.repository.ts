@@ -7,12 +7,12 @@ import { Repository } from 'typeorm';
 export class TaskRepository {
   constructor(@InjectRepository(Task) private repository: Repository<Task>) {}
 
-  addTask(task: Task) {
+  addTask(task: Task): Promise<Task> {
     console.log(task);
     return this.repository.save(task);
   }
 
-  async updateTask(id: number, attr: Partial<Task>) {
+  async updateTask(id: number, attr: Partial<Task>): Promise<Task> {
     const task = await this.findOneBy(id);
     if (!task) {
       throw new NotFoundException(
@@ -21,14 +21,14 @@ export class TaskRepository {
     }
 
     Object.assign(task, attr);
-    return this.repository.save(task);
+    return await this.repository.save(task);
   }
 
-  findOneBy(id: number) {
+  findOneBy(id: number): Promise<Task> {
     return this.repository.findOneBy({ id });
   }
 
-  retriveTasks() {
+  retriveTasks(): Promise<Task[]> {
     return this.repository.find();
   }
 

@@ -1,3 +1,4 @@
+import { IsString } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -13,6 +14,7 @@ export class Task {
   id: number;
 
   @Column()
+  @IsString()
   description: string;
 
   @Column()
